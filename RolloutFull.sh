@@ -1,3 +1,4 @@
+#!/bin/bash
 # sudo wget --inet4-only -O- https://raw.githubusercontent.com/wilker-santos/VSDImplantUpdater/main/UpdateServicesAWS_6-2023.sh | bash
 log() 
 {
@@ -84,35 +85,19 @@ sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-07* /opt/videosoft/vs-print/lo
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-06* /opt/videosoft/vs-print/log/
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-05* /opt/videosoft/vs-print/log/
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-04* /opt/videosoft/vs-print/log/
-log "Criando init scripts"
+log "Criando init scripts de rotação de tela e wallpaper"
+#Install Intel Graphics
 sudo su
 echo "sleep 2" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output HDMI1 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output HDMI-1 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output HDMI2 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output HDMI-2 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output DP1 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output DP-1 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output DP2 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output DP-2 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output LVDS1 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output LVDS-1 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output LVDS2 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xrandr --output LVDS-2 --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorLVDS1/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorLVDS-1/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorLVDS2/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorLVDS-2/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor0/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor1/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorHDMI1/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor2/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor3/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorHDMI-1/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorHDMI2/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorHDMI-2/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorDP1/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitorDP-1/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
+activeDisplay=$(xrandr | grep " connected " | awk '{ print$1 }')
+declare -a testeArr=($activeDisplay)
+for key in "${!testeArr[@]}"
+do
+	monitor=${testeArr[$key]}
+	display="monitor${monitor}"
+	echo "xrandr --output $monitor --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
+	echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
+done
 #Install Intel Graphics
 log "Instalando Intel Graphics"
 mkdir -p /etc/X11/xorg.conf.d
@@ -132,19 +117,19 @@ sudo mv /tmp/wallpaper.sh /opt/videosoft/scripts/init/
 sudo chmod +x /opt/videosoft/scripts/init/rotacionar-tela.sh
 sudo chmod +x /opt/videosoft/scripts/init/wallpaper.sh
 echo "*****************Instalação Concluida*************************"
-log "Reiniciando...."
-echo "Reiniciando Terminal em 5..."
-sleep 1
-echo "Reiniciando Terminal em 4..."
-sleep 1
-echo "Reiniciando Terminal em 3..."
-sleep 1
-echo "Reiniciando Terminal em 2..."
-sleep 1
-echo "Reiniciando Terminal em 1..."
-sleep 1
-echo "Reiniciando Terminal em 0..."
+log "APT Update + Instalar TeamViewer...."
 sleep 1
 apt update
+echo "Instalar TeamViewer e Reiniciar Terminal em 5..."
+sleep 1
+echo "Instalar TeamViewer e Reiniciar Terminal em 4..."
+sleep 1
+echo "Instalar TeamViewer e Reiniciar Terminal em 3..."
+sleep 1
+echo "Instalar TeamViewer e Reiniciar Terminal em 2..."
+echo "Instalar TeamViewer e Reiniciar Terminal em 1..."
+sleep 1
+echo "Instalar TeamViewer e Reiniciar Terminal em 0..."
+sleep 1
 apt install teamviewer -y
 reboot
