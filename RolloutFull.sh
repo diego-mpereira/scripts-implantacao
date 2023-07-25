@@ -90,6 +90,9 @@ log "Criando init scripts de rotação de tela e wallpaper"
 
 echo "sleep 2" >>/tmp/rotacionar-tela.sh
 activeDisplay=$(xrandr | grep " connected " | awk '{ print$1 }')
+echo "xrandr --output ${activeDisplay} --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
+display="monitor${activeDisplay}"
+cho "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
 declare -a testeArr=($activeDisplay)
 for key in "${!testeArr[@]}"
 do
