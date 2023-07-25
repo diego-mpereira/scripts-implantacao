@@ -87,7 +87,7 @@ sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-05* /opt/videosoft/vs-print/lo
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-04* /opt/videosoft/vs-print/log/
 log "Criando init scripts de rotação de tela e wallpaper"
 #Install Intel Graphics
-sudo su
+
 echo "sleep 2" >>/tmp/rotacionar-tela.sh
 activeDisplay=$(xrandr | grep " connected " | awk '{ print$1 }')
 declare -a testeArr=($activeDisplay)
@@ -95,9 +95,10 @@ for key in "${!testeArr[@]}"
 do
 	monitor=${testeArr[$key]}
 	display="monitor${monitor}"
-	echo "xrandr --output $monitor --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-	echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
+	echo "xrandr --output $activeDisplay --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
+	echo "xfconf-query --channel xfce4-desktop --property /backdrop/screen0/$display/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
 done
+sudo su
 #Install Intel Graphics
 log "Instalando Intel Graphics"
 mkdir -p /etc/X11/xorg.conf.d
