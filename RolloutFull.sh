@@ -69,30 +69,25 @@ sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/*2023-07* /opt/videosoft/vs-aut
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/*2023-06* /opt/videosoft/vs-autopag-se/log/
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/*2023-05* /opt/videosoft/vs-autopag-se/log/
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/*2023-04* /opt/videosoft/vs-autopag-se/log/
-
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/dmp/*202307* /opt/videosoft/vs-autopag-se/log/dmp/
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/dmp/*202306* /opt/videosoft/vs-autopag-se/log/dmp/
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/dmp/*202305* /opt/videosoft/vs-autopag-se/log/dmp/
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/dmp/*202304* /opt/videosoft/vs-autopag-se/log/dmp/
-
 sudo mv /opt/videosoft_bkp_log/vs-os-interface/log/*2023-07* /opt/videosoft/vs-os-interface/log/
 sudo mv /opt/videosoft_bkp_log/vs-os-interface/log/*2023-06* /opt/videosoft/vs-os-interface/log/
 sudo mv /opt/videosoft_bkp_log/vs-os-interface/log/*2023-05* /opt/videosoft/vs-os-interface/log/
 sudo mv /opt/videosoft_bkp_log/vs-os-interface/log/*2023-04* /opt/videosoft/vs-os-interface/log/
 sudo mv /opt/videosoft_bkp_log/vs-os-interface/log/_data* /opt/videosoft/vs-os-interface/log/
-
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-07* /opt/videosoft/vs-print/log/
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-06* /opt/videosoft/vs-print/log/
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-05* /opt/videosoft/vs-print/log/
 sudo mv /opt/videosoft_bkp_log/vs-print/log/*2023-04* /opt/videosoft/vs-print/log/
-log "Criando init scripts de rotação de tela e wallpaper"
-#Install Intel Graphics
-
+echo "Criando init scripts de rotação de tela e wallpaper"
 echo "sleep 2" >>/tmp/rotacionar-tela.sh
 activeDisplay=$(xrandr | grep " connected " | awk '{ print$1 }')
 echo "xrandr --output ${activeDisplay} --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
 display="monitor${activeDisplay}"
-cho "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
+echo "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
 declare -a testeArr=($activeDisplay)
 for key in "${!testeArr[@]}"
 do
@@ -111,16 +106,18 @@ echo 'Section "Device"
   Driver "intel"
   Option "TearFree" "true"
 EndSection' >>/etc/X11/xorg.conf.d/20-intel.conf
-
 # Incluindo Script Rotação no Init
 log "Instalação Concluida"
-
 echo "**********Inserir scripts wallpaper e resolution**************"
 sudo mv /tmp/rotacionar-tela.sh /opt/videosoft/scripts/init/
+sudo mv /tmp/rotacionar-tela.sh /usr/share/X11/xorg.d/rotacionarTela.conf
 sudo mv /tmp/wallpaper.sh /opt/videosoft/scripts/init/
+sudo mv /tmp/wallpaper.sh /usr/share/X11/xorg.d/wallpaper.conf
 sudo chmod +x /opt/videosoft/scripts/init/rotacionar-tela.sh
 sudo chmod +x /opt/videosoft/scripts/init/wallpaper.sh
+sudo chmod +x /usr/share/X11/xorg.d/*.conf
 echo "*****************Instalação Concluida*************************"
+clear
 log "APT Update + Instalar TeamViewer...."
 sleep 1
 apt update
