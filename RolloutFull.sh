@@ -95,8 +95,8 @@ for key in "${!testeArr[@]}"
 do
 	monitor=${testeArr[$key]}
 	display="monitor${monitor}"
-	echo "xrandr --output $activeDisplay --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-	echo "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/$display/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
+	echo "xrandr --output ${monitor} --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
+	echo "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
 done
 sudo su
 #Install Intel Graphics
