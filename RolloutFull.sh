@@ -1,5 +1,5 @@
 #!/bin/bash
-# sudo wget --inet4-only -O- https://raw.githubusercontent.com/wilker-santos/VSDImplantUpdater/main/UpdateServicesAWS_6-2023.sh | bash
+# sudo wget --inet4-only -O- https://script_link.sh | bash
 
 # Versions
 VsOsInterface="2.22.0"
@@ -82,14 +82,18 @@ activeDisplay=$(xrandr | grep " connected " | awk '{ print$1 }')
 echo "xrandr --output ${activeDisplay} --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
 display="monitor${activeDisplay}"
 echo "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-declare -a testeArr=($activeDisplay)
-for key in "${!testeArr[@]}"
-do
-	monitor=${testeArr[$key]}
-	display="monitor${monitor}"
-	echo "xrandr --output ${monitor} --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
-	echo "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
-done
+
+#####   ...  Array MultiTela  ...  Descomentar apenas se a maquina possuir mais de um monitor#####
+#declare -a testeArr=($activeDisplay)
+#for key in "${!testeArr[@]}"
+#do
+#	monitor=${testeArr[$key]}
+#	display="monitor${monitor}"
+#	echo "xrandr --output ${monitor} --mode 1920x1080 --rotate right" >>/tmp/rotacionar-tela.sh
+#	echo "sleep 5 && xfconf-query --channel xfce4-desktop --property /backdrop/screen0/${display}/workspace0/last-image --set /opt/videosoft/scripts/image-install/videosoft-vertical.png" >>/tmp/wallpaper.sh
+#done
+#####   ...  Array MultiTela  ...  #####
+
 sudo su
 #Install Intel Graphics
 echo "Instalando Intel Graphics"
@@ -103,10 +107,6 @@ EndSection' >>/etc/X11/xorg.conf.d/20-intel.conf
 # Incluindo Script Rotação no Init
 echo "Instalação Concluida"
 echo "**********Inserir scripts wallpaper e resolution**************"
-#sudo mv /tmp/rotacionar-tela.sh /opt/videosoft/scripts/init/
-#sudo mv /tmp/wallpaper.sh /opt/videosoft/scripts/init/
-#sudo chmod +x /opt/videosoft/scripts/init/rotacionar-tela.sh
-#sudo chmod +x /opt/videosoft/scripts/init/wallpaper.sh
 sudo mv /tmp/rotacionar-tela.sh /usr/share/X11/xorg.d/rotacionarTela.conf
 sudo mv /tmp/wallpaper.sh /usr/share/X11/xorg.d/wallpaper.conf
 sudo chmod +x /usr/share/X11/xorg.d/*.conf
