@@ -112,7 +112,7 @@ sudo mv /tmp/wallpaper.sh /usr/share/X11/xorg.d/wallpaper.conf
 sudo chmod +x /usr/share/X11/xorg.d/*.conf
 echo "*****************Instalação Concluida*************************"
 clear
-echo "APT Update + Instalar TeamViewer...."
+echo "APT Update && APT Install TeamViewer...."
 sleep 1
 apt update
 echo "Instalar TeamViewer e Reiniciar Terminal em 5..."
