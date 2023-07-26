@@ -1,11 +1,5 @@
 #!/bin/bash
 # sudo wget --inet4-only -O- https://raw.githubusercontent.com/wilker-santos/VSDImplantUpdater/main/UpdateServicesAWS_6-2023.sh | bash
-log() 
-{
-    echo $(date)
-    rm ~/update-status.txt
-    echo "$1" > ~/update-status.txt
-}
 
 # Versions
 VsOsInterface="2.22.0"
@@ -20,12 +14,12 @@ sudo ufw disable
 sudo modprobe usbcore autosuspend=-1
 sudo snap remove brave
 
-log "Parando serviços..."
+echo "Parando serviços..."
 # Stop all services
 killall node
 
 # Backups
-log "Criando Backups..."
+echo "Criando Backups..."
 sudo mkdir -p /opt/videosoft_bkp_log/vs-autopag-se/
 sudo mkdir -p /opt/videosoft_bkp_log/vs-os-interface/
 sudo mkdir -p /opt/videosoft_bkp_log/vs-print/
@@ -40,30 +34,30 @@ sudo rm /var/crash/*
 sudo apt remove apport apport-symptoms -y
 
 # Download packages
-log "Download VS OS Interface...."
+echo "Download VS OS Interface...."
 wget --inet4-only -c https://cdn.vsd.app/softwares/vs-os-interface/$VsOsInterface/vs-os-interface_$VsOsInterface'_amd64.deb'
-log "Download VS Autopag S.E...." 
+echo "Download VS Autopag S.E...." 
 wget --inet4-only -c https://cdn.vsd.app/softwares/vs-autopag-se/$VsAutoPagSE/vs-autopag-se_$VsAutoPagSE'_amd64.deb'
-log "Download VS Food Launcher...." 
+echo "Download VS Food Launcher...." 
 wget --inet4-only -c https://github.com/wilker-santos/VSDImplantUpdater/raw/main/vs-food-launcher_2.0.0_amd64.deb
-log "Download Google Chrome...." 
+echo "Download Google Chrome...." 
 wget --inet4-only -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 # Install packages
-log "Instalando VS Autopag S.E...."
+echo "Instalando VS Autopag S.E...."
 sudo dpkg -i vs-autopag-se_$VsAutoPagSE'_amd64.deb'
-log "Instalando VS OS Interface...."
+echo "Instalando VS OS Interface...."
 sudo dpkg -i vs-os-interface_$VsOsInterface'_amd64.deb'
-log "Instalando VS Food Launcher...."
+echo "Instalando VS Food Launcher...."
 sudo dpkg -i vs-food-launcher_2.0.0_amd64.deb
-log "Instalando Google Chrome...."
+echo "Instalando Google Chrome...."
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
-log "Removendo arquivos temporários...."
+echo "Removendo arquivos temporários...."
 # Remove packages
 rm *.deb
 
-log "Restaurando Backups...."
+echo "Restaurando Backups...."
 # Restaurar Backups
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/*2023-07* /opt/videosoft/vs-autopag-se/log/
 sudo mv /opt/videosoft_bkp_log/vs-autopag-se/log/*2023-06* /opt/videosoft/vs-autopag-se/log/
@@ -98,7 +92,7 @@ do
 done
 sudo su
 #Install Intel Graphics
-log "Instalando Intel Graphics"
+echo "Instalando Intel Graphics"
 mkdir -p /etc/X11/xorg.conf.d
 touch 20-intel.conf
 echo 'Section "Device"
@@ -107,18 +101,18 @@ echo 'Section "Device"
   Option "TearFree" "true"
 EndSection' >>/etc/X11/xorg.conf.d/20-intel.conf
 # Incluindo Script Rotação no Init
-log "Instalação Concluida"
+echo "Instalação Concluida"
 echo "**********Inserir scripts wallpaper e resolution**************"
-sudo mv /tmp/rotacionar-tela.sh /opt/videosoft/scripts/init/
+#sudo mv /tmp/rotacionar-tela.sh /opt/videosoft/scripts/init/
+#sudo mv /tmp/wallpaper.sh /opt/videosoft/scripts/init/
+#sudo chmod +x /opt/videosoft/scripts/init/rotacionar-tela.sh
+#sudo chmod +x /opt/videosoft/scripts/init/wallpaper.sh
 sudo mv /tmp/rotacionar-tela.sh /usr/share/X11/xorg.d/rotacionarTela.conf
-sudo mv /tmp/wallpaper.sh /opt/videosoft/scripts/init/
 sudo mv /tmp/wallpaper.sh /usr/share/X11/xorg.d/wallpaper.conf
-sudo chmod +x /opt/videosoft/scripts/init/rotacionar-tela.sh
-sudo chmod +x /opt/videosoft/scripts/init/wallpaper.sh
 sudo chmod +x /usr/share/X11/xorg.d/*.conf
 echo "*****************Instalação Concluida*************************"
 clear
-log "APT Update + Instalar TeamViewer...."
+echo "APT Update + Instalar TeamViewer...."
 sleep 1
 apt update
 echo "Instalar TeamViewer e Reiniciar Terminal em 5..."
