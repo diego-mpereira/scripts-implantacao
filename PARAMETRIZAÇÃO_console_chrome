@@ -7,3 +7,4 @@ document.body.innerHTML = document.body.innerHTML.replace(/"PAYMENT_METHOD": "cr
 a = document.getElementById("entity_layout").options.length;
 a -= 1
 document.getElementById("entity_layout").selectedIndex = a;
+document.getElementById("easyForm").submit();
