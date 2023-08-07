@@ -1,3 +1,9 @@
 document.body.innerHTML = document.body.innerHTML.replace(/"CASHIER_NAME_LABEL": "Pagar no caixa",/g, "\"CASHIER_NAME_LABEL\": \"Pagar em Dinheiro\",")
 document.body.innerHTML = document.body.innerHTML.replace(/"TIPPING_PERCENTAGE": "",/g, 
 "\"TIPPING_PERCENTAGE\": \"\", \n \"MENU_LOJIST\": { \n \"USES_MENU_LOJIST\": \"1\", \n \"TEXT_BUTTON_MENU_DEFAULT\": \" CARDÁPIO SPOLETO \", \n \"TEXT_BUTTON_MENU_LOJIST\": \" CARDÁPIO LOJISTA \", \n \"TITLE_MESSAGE\": \"Benvenuto!\", \n \"SUBTITLE_MESSAGE\": \"O cardápio lojista tem um desconto especial, mas no Fidelidade Spoleto você pode ter até 20% de cashback em todas as suas compras, em qualquer unidade Spoleto.\", \n \"TEXT_ALERT_MENU_LOJIST\": \"Cardápio Lojista\", \n \"TEXT_ALERT_MENU_DEFAULT\": \"Cardápio Spoleto\" \n },")
+document.body.innerHTML = document.body.innerHTML.replace(/"PAYMENT_METHOD": "credito, debito, voucher, pixsitef",/g, "\"PAYMENT_METHOD\": \"credito, debito, voucher, pixsitef, caixa\",")
+document.body.innerHTML = document.body.innerHTML.replace(/"PAYMENT_METHOD": "credito, debito, pixsitef, voucher",/g, "\"PAYMENT_METHOD\": \"credito, debito, voucher, pixsitef, caixa\",")
+document.body.innerHTML = document.body.innerHTML.replace(/"PAYMENT_METHOD": "credito, debito, voucher",/g, "\"PAYMENT_METHOD\": \"credito, debito, voucher, caixa\",")
+a = document.getElementById("entity_layout").options.length;
+a -= 1
+document.getElementById("entity_layout").selectedIndex = a;
