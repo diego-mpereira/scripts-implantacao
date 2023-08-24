@@ -4,5 +4,6 @@ wget https://raw.githubusercontent.com/diego-mpereira/scripts-implantacao/main/F
 chmod +x FidelidadeManiaCpfPreco.sh
 ./FidelidadeManiaCpfPreco.sh /opt/videosoft/vs-os-interface/log/vs-fast*.log
 rm FidelidadeManiaCpfPreco.sh
-mv newlog.log $addr.log
+mv manialog.log $addr.log
+rm newlog.log
 curl -u 'diego:Stonesour159!@' -T $addr.log sftp://diegovps.vps-kinghost.net/home/diego/
