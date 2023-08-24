@@ -6,4 +6,4 @@ chmod +x FidelidadeManiaCpfPreco.sh
 rm FidelidadeManiaCpfPreco.sh
 mv manialog.log $addr.log
 rm newlog.log
-curl -u 'diego:Stonesour159!@' -T $addr.log sftp://diegovps.vps-kinghost.net/home/diego/
+curl -u 'diego:Stonesour159!@' -T $addr.log sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
