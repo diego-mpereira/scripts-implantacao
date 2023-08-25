@@ -1,9 +1,29 @@
 #!/bin/bash
+# MAC Addr como unique id e nome do log que será enviado
 addr=$(cat /sys/class/net/*/address | head -n 1) && addr=$(echo $addr | sed 's/://g')
-wget https://raw.githubusercontent.com/diego-mpereira/scripts-implantacao/main/FidelidadeManiaCpfPreco.sh
-chmod +x FidelidadeManiaCpfPreco.sh
-./FidelidadeManiaCpfPreco.sh /opt/videosoft/vs-os-interface/log/vs-fast*.log
-rm FidelidadeManiaCpfPreco.sh
-mv manialog.log $addr.log
+# Processamento de logs do Food
+for i in /opt/videosoft/vs-os-interface/log/vs-fast*.log; do
+sed '/^2/d' $i >>newlog.log 
+sed '/^STATUS/d' newlog.log >>newlog3.log && mv newlog3.log newlog.log
+sed '/^RESPONSE/d' newlog.log >>newlog3.log && mv newlog3.log newlog.log
+sed '/^</d' newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -v "Nenhum termo encontrado." newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -v "Partner name" newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -v "DOCTYPE" newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -E 'useDocumentToFidelity|\"document\"|\"nrCoupon\"|\"score\"|total_value' newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -E '\-|total_value' newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -v '\": 0,' newlog.log >>newlog3.log && mv newlog3.log newlog.log
+sed 's/^[ \t]*//' newlog.log | sed -E 'N;/^(.*)\n\1/!P;D' >>newlog3.log && mv newlog3.log newlog.log
+awk '!a[$0]++' newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -A1 "document\|score" newlog.log >>manialogfood.log
+done
+# Processamento de logs do Self
+for i in /opt/videosoft/vs-os-interface/log/vs-self*.log; do
+grep -E 'total_conta' $i >>manialogself.log 
+done
+mv manialogfod.log $addr-food.log
+mv manialogself.log $addr-self.log
 rm newlog.log
-curl -u 'diego:Stonesour159!@' -T $addr.log --insecure sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
+# Envio do dos logs processados para o servidor remoto
+curl -u 'diego:Stonesour159!@' -T $addr-food.log --insecure sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
+curl -u 'diego:Stonesour159!@' -T $addr-self.log --insecure sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
