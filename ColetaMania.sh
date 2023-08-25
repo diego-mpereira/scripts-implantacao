@@ -14,7 +14,8 @@ grep -E 'total_conta' $i >>manialogself.log
 done
 mv manialogfod.log $addr-food.log
 mv manialogself.log $addr-self.log
-rm newlog.log
 # Envio do dos logs processados para o servidor remoto
 curl -u 'diego:Stonesour159!@' -T $addr-food.log --insecure sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
 curl -u 'diego:Stonesour159!@' -T $addr-self.log --insecure sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
+rm newlog.log && rm manialogfood.log && rm manialogself.log
+
