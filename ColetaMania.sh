@@ -17,14 +17,8 @@ sed 's/^[ \t]*//' newlog.log | sed -E 'N;/^(.*)\n\1/!P;D' >>newlog3.log && mv ne
 awk '!a[$0]++' newlog.log >>newlog3.log && mv newlog3.log newlog.log
 grep -A1 "document\|score" newlog.log >>manialogfood.log
 done
-# Processamento de logs do Self
-for i in /opt/videosoft/vs-os-interface/log/vs-self*.log; do
-grep -E 'total_conta' $i >>manialogself.log 
-done
 mv manialogfood.log $addr-food.log
-mv manialogself.log $addr-self.log
 # Envio do dos logs processados para o servidor remoto
 curl -u 'diego:V$V$V$3363' -T $addr-food.log --insecure sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
-curl -u 'diego:V$V$V$3363' -T $addr-self.log --insecure sftp://diegovps.vps-kinghost.net/home/diego/manialogs/
-rm newlog.log && rm $addr-food.log && rm $addr-self.log
+rm newlog.log && rm $addr-food.log
 
