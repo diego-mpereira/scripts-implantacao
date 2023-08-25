@@ -15,7 +15,7 @@ grep -E '\-|total_value' newlog.log >>newlog3.log && mv newlog3.log newlog.log
 grep -v '' newlog.log >>newlog3.log && mv newlog3.log newlog.log
 sed 's/^[ \t]*//' newlog.log | sed -E 'N;/^(.*)\n\1/!P;D' >>newlog3.log && mv newlog3.log newlog.log
 awk '!a[$0]++' newlog.log >>newlog3.log && mv newlog3.log newlog.log
-grep -A1 "document\|score" newlog.log >>newlog3.log && mv newlog3.log newlog.log
+grep -A1 "document\|score" newlog.log >>manialogfood.log
 done
 mv manialogfood.log $addr-food.log
 rm manialogfood.log
