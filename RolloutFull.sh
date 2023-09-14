@@ -2,8 +2,8 @@
 # sudo wget --inet4-only -O- https://script_link.sh | bash
 
 # Versions
-VsOsInterface="2.22.0"
-VsAutoPagSE="2.22.7"
+VsOsInterface="2.23.3"
+VsAutoPagSE="2.22.8"
 #VsPrint="2.18.0"
 VsFoodLauncher="2.0.0"
 
