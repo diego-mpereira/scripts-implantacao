@@ -18,4 +18,4 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-curl -sSf "http://diegovps.vps-kinghost.net/install.sh?tenant_id=1087ee24-ffd2-418d-bdfa-ce9d7855e3a1" | sudo sh
+curl -sSf "http://diegovps.vps-kinghost.net/install.sh?tenant_id=3d77a442-dfe6-45a4-9304-b9b9bbc6aad8" | sudo sh
